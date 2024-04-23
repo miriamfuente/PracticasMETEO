@@ -7,53 +7,53 @@ library(dplyr)
 library(climate4R.value)
 library(VALUE)
 
-# # Leer el archivo CSV
-# df <- read.csv("https://data.meteo.unican.es/inventory.csv") # inventario con muchos datasets
-# # Filtrar los enlaces que necesitas
-# sub <- subset(df, product == 'AEMET-5KM-regular')
-# obs.url <- as.character(sub$location)
-# # Ejecutar dataInventory con los enlaces filtrados
-# di <- dataInventory(obs.url)
+# Leer el archivo CSV
+df <- read.csv("https://data.meteo.unican.es/inventory.csv") # inventario con muchos datasets
+# Filtrar los enlaces que necesitas
+sub <- subset(df, product == 'AEMET-5KM-regular')
+obs.url <- as.character(sub$location)
+# Ejecutar dataInventory con los enlaces filtrados
+di <- dataInventory(obs.url)
 
 
-# pr <- loadGridData(obs.url, var = "pr")
-# tmax <- loadGridData(obs.url, var = "tasmax")
+pr <- loadGridData(obs.url, var = "pr")
+tmax <- loadGridData(obs.url, var = "tasmax")
 
-# pr <- upscaleGrid(pr, times = 2, aggr.fun = list(FUN = mean, na.rm = TRUE))
-# tmax <- upscaleGrid(tmax, times = 2, aggr.fun = list(FUN = mean, na.rm = TRUE))
-
-
-pr1 <- readRDS("pr51_61.rds")
-pr2 <- readRDS("pr62_72.rds")
-pr3 <- readRDS("pr73_83.rds")
-pr4 <- readRDS("pr84_94.rds")
-pr5 <- readRDS("pr95_05.rds")
-pr6 <- readRDS("pr06_16.rds")
-pr7 <- readRDS("pr17_22.rds")
-pr <- bindGrid(pr1, pr2, pr3, pr4, pr5, pr6, pr7, dimension = "time")
-rm(pr1, pr2, pr3, pr4, pr5, pr6, pr7)
+pr <- upscaleGrid(pr, times = 2, aggr.fun = list(FUN = mean, na.rm = TRUE))
+tmax <- upscaleGrid(tmax, times = 2, aggr.fun = list(FUN = mean, na.rm = TRUE))
 
 
-t1 <- readRDS("tmax51_61.rds")
-t2 <- readRDS("tmax62_72.rds")
-t3 <- readRDS("tmax73_83.rds")
-t4 <- readRDS("tmax84_94.rds")
-t5 <- readRDS("tmax95_05.rds")
-t6 <- readRDS("tmax06_16.rds")
-t7 <- readRDS("tmax17_22.rds")
-tmax <- bindGrid(t1, t2, t3, t4, t5, t6, t7, dimension = "time")
-rm(t1, t2, t3, t4, t5, t6, t7)
+# pr1 <- readRDS("pr51_61.rds")
+# pr2 <- readRDS("pr62_72.rds")
+# pr3 <- readRDS("pr73_83.rds")
+# pr4 <- readRDS("pr84_94.rds")
+# pr5 <- readRDS("pr95_05.rds")
+# pr6 <- readRDS("pr06_16.rds")
+# pr7 <- readRDS("pr17_22.rds")
+# pr <- bindGrid(pr1, pr2, pr3, pr4, pr5, pr6, pr7, dimension = "time")
+# rm(pr1, pr2, pr3, pr4, pr5, pr6, pr7)
+
+
+# t1 <- readRDS("tmax51_61.rds")
+# t2 <- readRDS("tmax62_72.rds")
+# t3 <- readRDS("tmax73_83.rds")
+# t4 <- readRDS("tmax84_94.rds")
+# t5 <- readRDS("tmax95_05.rds")
+# t6 <- readRDS("tmax06_16.rds")
+# t7 <- readRDS("tmax17_22.rds")
+# tmax <- bindGrid(t1, t2, t3, t4, t5, t6, t7, dimension = "time")
+# rm(t1, t2, t3, t4, t5, t6, t7)
 
 pr_h <- pr
 
 # Parte Humeda Precipitacion
 dimension <- dim(pr_h$Data)
-for (a in 1:dimension[1]) {
-  for (i in 1:dimension[2]) {
-    for (j in 1:dimension[3]) {
-      if (!is.na(pr_h$Data[a,i,j])) { # Check for missing values
-          if (pr_h$Data[a,i,j] <= 0.1) {
-              pr_h$Data[a,i,j] <- NaN
+for (a in 1:dimension[3]) {
+  for (i in 1:dimension[4]) {
+    for (j in 1:dimension[5]) {
+      if (!is.na(pr_h$Data[1,1,a,i,j])) { # Check for missing values
+          if (pr_h$Data[1,1,a,i,j] <= 0.1) {
+              pr_h$Data[1,1,a,i,j] <- NaN
             }
           }
         }
